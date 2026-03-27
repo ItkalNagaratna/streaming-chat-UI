@@ -39,18 +39,18 @@ export const ContextLens: React.FC<ContextLensProps> = ({
 
   const getColorClass = (type: ContextType) => {
     switch (type) {
-      case "document": return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200 dark:border-blue-800"
-      case "web": return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
-      case "image": return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 border-purple-200 dark:border-purple-800"
-      case "code": return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800"
+      case "document": return "bg-blue-500/10 text-blue-400 border-blue-500/20"
+      case "web": return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+      case "image": return "bg-purple-500/10 text-purple-400 border-purple-500/20"
+      case "code": return "bg-amber-500/10 text-amber-400 border-amber-500/20"
     }
   }
 
   return (
     <div className={cn("flex flex-col gap-3 w-full max-w-2xl mx-auto", className)}>
       <div className="flex items-center gap-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{title}</h3>
-        <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800"></div>
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">{title}</h3>
+        <div className="h-px flex-1 bg-white/10"></div>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -80,11 +80,11 @@ export const ContextLens: React.FC<ContextLensProps> = ({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className="mt-2 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm relative overflow-hidden"
+            className="mt-2 p-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-sm relative overflow-hidden"
           >
             <button
               onClick={() => setSelectedItem(null)}
-              className="absolute top-3 right-3 p-1 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors"
+              className="absolute top-3 right-3 p-1 rounded-md hover:bg-white/10 text-zinc-400 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -93,7 +93,7 @@ export const ContextLens: React.FC<ContextLensProps> = ({
               <div className={cn("p-1.5 rounded-md", getColorClass(selectedItem.type).split(' ')[0], getColorClass(selectedItem.type).split(' ')[1])}>
                 {getIcon(selectedItem.type)}
               </div>
-              <h4 className="font-medium text-sm text-zinc-900 dark:text-zinc-100">{selectedItem.title}</h4>
+              <h4 className="font-medium text-sm text-zinc-100">{selectedItem.title}</h4>
               {selectedItem.url && (
                 <a href={selectedItem.url} target="_blank" rel="noopener noreferrer" className="ml-auto text-zinc-400 hover:text-blue-500 transition-colors">
                   <ExternalLink className="w-4 h-4" />
@@ -102,8 +102,8 @@ export const ContextLens: React.FC<ContextLensProps> = ({
             </div>
 
             {selectedItem.snippet && (
-              <div className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed bg-zinc-50 dark:bg-zinc-900/50 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800/50">
-                "{selectedItem.snippet}"
+              <div className="text-sm text-zinc-300 leading-relaxed bg-black/20 p-3 rounded-lg border border-white/5">
+                &quot;{selectedItem.snippet}&quot;
               </div>
             )}
           </motion.div>

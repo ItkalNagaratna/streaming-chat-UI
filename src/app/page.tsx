@@ -1,10 +1,12 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { ThoughtTrace, ThoughtStep } from "@/components/aura-ui/ThoughtTrace"
 import { ContextLens, ContextItem } from "@/components/aura-ui/ContextLens"
 import { StreamingText } from "@/components/aura-ui/StreamingText"
-import { Sparkles, Send } from "lucide-react"
+import { Sparkles, Send, Bot, User } from "lucide-react"
+import { MeshBackground } from "@/components/aura-ui/MeshBackground"
 
 export default function Home() {
   const [stage, setStage] = useState<"idle" | "thinking" | "streaming" | "done">("idle")
@@ -102,80 +104,169 @@ export default function Home() {
   }, [stage])
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 p-8 font-sans pb-32">
-      <div className="max-w-3xl mx-auto flex flex-col gap-12 pt-12">
+    <div className="min-h-screen bg-black text-zinc-100 font-sans relative overflow-hidden flex flex-col items-center pb-32">
+      <MeshBackground />
 
-        {/* Header */}
-        <div className="text-center flex flex-col items-center gap-4">
-          <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-2xl text-blue-600 dark:text-blue-400 w-fit">
-            <Sparkles className="w-8 h-8" />
-          </div>
-          <h1 className="text-4xl font-bold tracking-tight">Aura UI</h1>
-          <p className="text-zinc-500 dark:text-zinc-400 text-lg">AI-Native Components for Answer Engines</p>
-        </div>
+      <div className="w-full max-w-4xl px-4 md:px-8 mt-16 md:mt-24 z-10 flex flex-col">
+        <AnimatePresence mode="wait">
+          {stage === "idle" ? (
+            <motion.div
+              key="idle"
+              initial="hidden"
+              animate="visible"
+              exit={{ opacity: 0, y: -20, filter: "blur(10px)", scale: 0.95 }}
+              transition={{ duration: 0.5, ease: "anticipate" }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+              }}
+              className="flex flex-col items-center justify-center text-center mt-20"
+            >
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, scale: 0.5, y: 20 },
+                  visible: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", bounce: 0.5 } }
+                }}
+                className="relative mb-8"
+              >
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 bg-blue-500 blur-3xl rounded-full"
+                />
+                <motion.div
+                  whileHover={{ scale: 1.05, rotate: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative bg-white/5 border border-white/10 p-5 rounded-[2rem] text-blue-400 shadow-2xl backdrop-blur-xl cursor-default"
+                >
+                  <Sparkles className="w-12 h-12" />
+                </motion.div>
+              </motion.div>
 
-        {stage === "idle" ? (
-          <div className="flex flex-col items-center justify-center py-20 text-zinc-400 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl">
-            <Sparkles className="w-8 h-8 mb-4 opacity-50" />
-            <p>Ask a question to see Aura UI in action.</p>
-            <p className="text-sm mt-2 opacity-60">Try asking about "building an AI library"</p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {/* User Query */}
-            <div className="text-2xl font-semibold px-4 border-l-4 border-zinc-200 dark:border-zinc-800">
-              {activeQuery}
-            </div>
+              <motion.h1
+                variants={{
+                  hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+                  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } }
+                }}
+                className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 drop-shadow-sm"
+              >
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-zinc-100 via-zinc-300 to-zinc-500 animate-text-shimmer bg-[length:200%_auto]">
+                  Discover Aura.
+                </span>
+              </motion.h1>
 
-            {/* AI Response Area */}
-            <div className="flex flex-col gap-6 bg-white dark:bg-zinc-900/50 p-6 sm:p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+              <motion.p
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+                }}
+                className="text-zinc-400 text-lg md:text-xl max-w-xl mx-auto font-light leading-relaxed"
+              >
+                Experience the next generation of AI-Native components. Redefined for beautiful, contextual, and transparent Answer Engines.
+              </motion.p>
+            </motion.div>
+          ) : (
+            <motion.div
+              layout
+              key="chat"
+              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 20,
+                mass: 0.8
+              }}
+              className="flex flex-col gap-10 w-full"
+            >
+              {/* User Query Thread */}
+              <motion.div
+                layout
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ type: "spring", bounce: 0.3 }}
+                className="flex gap-4 items-start w-full self-end ml-auto sm:w-5/6 lg:w-3/4"
+              >
+                <div className="mt-1 bg-blue-500/10 border border-blue-500/20 p-2.5 rounded-2xl flex-shrink-0 text-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+                  <User className="w-5 h-5" />
+                </div>
+                <div className="flex bg-white/5 border border-white/10 backdrop-blur-xl px-5 py-4 rounded-3xl rounded-tl-sm text-lg font-medium tracking-wide shadow-lg">
+                  {activeQuery}
+                </div>
+              </motion.div>
 
-              <ThoughtTrace
-                steps={thoughtSteps}
-                isFinished={stage === "streaming" || stage === "done"}
-              />
+              {/* AI Response Area */}
+              <motion.div
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", bounce: 0.3, delay: 0.1 }}
+                className="flex flex-col w-full mx-auto relative sm:w-5/6 lg:w-4/5 gap-4"
+              >
+                <div className="absolute -left-14 top-2 bg-gradient-to-b from-purple-500/20 to-blue-500/20 border border-white/10 p-2.5 rounded-2xl flex-shrink-0 text-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.15)] hidden sm:flex">
+                  <Bot className="w-5 h-5" />
+                </div>
 
-              {(stage === "streaming" || stage === "done") && (
-                <div className="animate-in fade-in slide-in-from-top-4 duration-500 delay-300 fill-mode-both flex flex-col gap-8 mt-4">
-
-                  <ContextLens items={contextItems} />
-
-                  <div className="h-px w-full bg-zinc-100 dark:bg-zinc-800" />
-
-                  <StreamingText
-                    text={fullText}
-                    isStreaming={stage === "streaming"}
-                    speed={15}
+                <div className="flex flex-col gap-6 bg-white/5 backdrop-blur-2xl p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl relative">
+                  <ThoughtTrace
+                    steps={thoughtSteps}
+                    isFinished={stage === "streaming" || stage === "done"}
+                    className="bg-black/20 border-white/5 shadow-inner"
                   />
 
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+                  <AnimatePresence>
+                    {(stage === "streaming" || stage === "done") && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        className="flex flex-col gap-8 mt-2"
+                      >
+                        <ContextLens
+                          items={contextItems}
+                          className="bg-black/20 border-white/5 rounded-2xl p-4 shadow-inner"
+                        />
 
+                        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+                        <StreamingText
+                          text={fullText}
+                          isStreaming={stage === "streaming"}
+                          speed={15}
+                          className="text-white/90 font-light text-[1.05rem] tracking-wide"
+                          cursorColor="bg-blue-400"
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Input Form fixed at bottom */}
-      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-zinc-50 via-zinc-50 to-transparent dark:from-zinc-950 dark:via-zinc-950">
+      <div className="fixed bottom-0 left-0 right-0 p-6 sm:p-8 bg-gradient-to-t from-[#050511] via-[#050511]/90 to-transparent flex justify-center z-50">
         <form
           onSubmit={handleSubmit}
-          className="max-w-2xl mx-auto relative flex items-center"
+          className="w-full max-w-3xl relative flex items-center group"
         >
+          <div className="absolute inset-0 bg-blue-500/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask anything..."
+            placeholder="Ask about building an AI library..."
             disabled={stage === "thinking" || stage === "streaming"}
-            className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full py-4 pl-6 pr-14 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 transition-all"
+            className="w-full bg-white/10 backdrop-blur-2xl border border-white/10 rounded-full py-4 pl-7 pr-16 text-white placeholder:text-zinc-500 shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 disabled:opacity-50 transition-all font-light tracking-wide text-lg"
           />
           <button
             type="submit"
             disabled={!query.trim() || stage === "thinking" || stage === "streaming"}
-            className="absolute right-2 p-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-full transition-colors disabled:opacity-50 disabled:hover:bg-blue-500"
+            className="absolute right-3 p-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-full transition-all disabled:opacity-50 disabled:grayscale shadow-lg active:scale-95"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5 hover:translate-x-0.5 transition-transform" />
           </button>
         </form>
       </div>

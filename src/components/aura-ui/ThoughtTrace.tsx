@@ -35,7 +35,7 @@ export const ThoughtTrace: React.FC<ThoughtTraceProps> = ({
   }, [isFinished])
 
   return (
-    <div className={cn("flex flex-col gap-2 w-full max-w-2xl mx-auto rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 shadow-sm", className)}>
+    <div className={cn("flex flex-col gap-2 w-full max-w-2xl mx-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4 shadow-sm", className)}>
       <div
         className="flex items-center justify-between cursor-pointer select-none"
         onClick={() => setExpanded(!expanded)}
@@ -67,7 +67,7 @@ export const ThoughtTrace: React.FC<ThoughtTraceProps> = ({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="pt-4 pl-2 flex flex-col gap-4 relative before:absolute before:inset-y-0 before:left-4 before:w-px before:bg-zinc-200 dark:before:bg-zinc-800 before:-z-10 mt-1">
+            <div className="pt-4 pl-2 flex flex-col gap-4 relative before:absolute before:inset-y-0 before:left-4 before:w-px before:bg-white/10 before:-z-10 mt-1">
               {steps.map((step, index) => (
                 <motion.div
                   key={step.id}
@@ -76,7 +76,7 @@ export const ThoughtTrace: React.FC<ThoughtTraceProps> = ({
                   transition={{ delay: index * 0.1 }}
                   className="flex gap-3 relative"
                 >
-                  <div className="flex-shrink-0 mt-0.5 bg-white dark:bg-zinc-950">
+                  <div className="flex-shrink-0 mt-0.5 bg-transparent">
                     {step.status === "completed" && <CheckCircle2 className="w-4 h-4 text-zinc-400 dark:text-zinc-500" />}
                     {step.status === "active" && <Loader2 className="w-4 h-4 animate-spin text-blue-500" />}
                     {step.status === "pending" && <Circle className="w-4 h-4 text-zinc-300 dark:text-zinc-700" />}
