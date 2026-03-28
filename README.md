@@ -1,6 +1,6 @@
 # Aura UI: The Future of AI-Native Interfaces 🌌
 
-![Aura UI Hero Container](./public/assets/hero.png)
+![Aura UI Interface](./public/assets/Screenshot.png)
 
 Aura UI is a premium, flagship-tier React component library designed specifically for the next generation of "Answer Engines." It moves beyond the traditional chatbot wrapper, providing a cinematic, contextual, and deeply transparent interface for AI interactions.
 
